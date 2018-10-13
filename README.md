@@ -1,2 +1,2 @@
 # Probably-OOPM
-Repo for our college project on Object Oriented Programming
+Repo for our college mini project on Object Oriented Programming
