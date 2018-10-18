@@ -7,6 +7,7 @@ Initial module idea/list :
 - Connect with other groups database and give info
 - Jokes Maybe?
 - Trivia ?
+- Re-tweet tweets based on a tag (twitter)
 
 plz add to the list...
 
