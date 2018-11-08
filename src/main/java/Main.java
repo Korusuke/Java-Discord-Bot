@@ -2,9 +2,12 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
+import net.dv8tion.jda.core.EmbedBuilder;
 import javax.security.auth.login.LoginException;
+import java.awt.Color;
 
+import functions.reddit;
+import functions.menu;
 
 public class Main extends ListenerAdapter {
     public static void main(String[] args) throws LoginException {
@@ -22,8 +25,22 @@ public class Main extends ListenerAdapter {
                 event.getMessage().getContentDisplay()
         );
 
-        if(event.getMessage().getContentRaw().equals("!ping")){
+        String rmsg = event.getMessage().getContentRaw();
+        rmsg = rmsg.toLowerCase();
+        System.out.println(rmsg);
+
+        if(rmsg.equals("!menu")){
+            menu.showMenu(event);
+
+        }
+
+        if(rmsg.equals("!ping")){
             event.getChannel().sendMessage("Pong!").queue();
+
+        }
+
+        if(rmsg.equals("!meme")){
+            reddit.ph(event);
 
         }
 
