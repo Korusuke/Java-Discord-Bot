@@ -1,4 +1,7 @@
+import functions.menu;
+import functions.movies;
 import functions.news;
+import functions.reddit;
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbSearch;
 import info.movito.themoviedbapi.model.MovieDb;
@@ -12,20 +15,9 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.EmbedBuilder;
-import javax.security.auth.login.LoginException;
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import functions.reddit;
-import functions.menu;
-import functions.movies;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 
 
@@ -37,6 +29,7 @@ public class Main extends ListenerAdapter {
     EmbedBuilder eb;
     RequestBuilder query_request;
     List<MovieDb> res;
+    Boolean flag = false;
 
     public static void main(String[] args) throws Exception {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -48,7 +41,7 @@ public class Main extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
+        flag = false;
         System.out.println("We received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
 
         newsApi = new NewsApi("12ecefd220214b38902f8a9d7dc0beff"); // Hide it later, newsApi api key
@@ -57,9 +50,11 @@ public class Main extends ListenerAdapter {
 
         //News Stuff - Checking for valid query
         if(param[0].toLowerCase().equals("!news") && param.length == 1){
+            flag = true;
             event.getChannel().sendMessage("Please, type command as follows: ```!news <category> <keyword>``` or ```!news latest```\nFor more info, type ```!menu```").queue();
         }
         else if(param[0].equals("!news") && param[1].toLowerCase().equals("latest")){
+            flag = true;
             System.out.println("Parameter passed: " + param[1].toLowerCase());
             RequestBuilder query_request = new RequestBuilder().setCountry("in").setLanguage("en").setSortBy("popularity");
 
@@ -75,7 +70,7 @@ public class Main extends ListenerAdapter {
             news.show_news(event, newsArticle, false); // false flag implies latest news will return 20 results
         }
         else if (param[0].equals("!news") && param.length == 3) {
-
+            flag = true;
             System.out.println("Category passed: " + param[1].toLowerCase() + "\nKeyword passed: " + param[2].toLowerCase());
             try{
                 query_request = new RequestBuilder().setCategory(param[1].toLowerCase()).setQ(param[2].toLowerCase()).setLanguage("en").setSortBy("relevancy");
@@ -85,15 +80,16 @@ public class Main extends ListenerAdapter {
             }
             try {
                 apiArt = newsApi.sendEverythingRequest(query_request);
+                System.out.println("API Response: " + apiArt.articles());
+                newsArticle = apiArt.articles();
+                System.out.println("No. of articles: " + newsArticle.size());
+                news.show_news(event, newsArticle, true); // true flag implies it will return as of now only 5 results
             } catch (Exception e) {
                 System.out.println("Error :" + e.getMessage());
             }
-            System.out.println("API Response: " + apiArt.articles());
-            newsArticle = apiArt.articles();
-            System.out.println("No. of articles: " + newsArticle.size());
-            news.show_news(event, newsArticle, true); // true flag implies it will return as of now only 5 results
         }
         else if (param[0].equals("!news") && param.length == 2){
+            flag = true;
             event.getChannel().sendMessage("Please, type command as follows: ```!news <category> <keyword>``` or ```!news latest```\nFor more info, type ```!menu```").queue();
         }
 
@@ -105,18 +101,21 @@ public class Main extends ListenerAdapter {
         System.out.println(rmsg);
 
         if (rmsg.equals("!menu")) {
+            flag = true;
             menu.showMenu(event);
         }
 
         if (rmsg.equals("!ping")) {
+            flag = true;
             event.getChannel().sendMessage("Pong!").queue();
         }
 
         if (rmsg.equals("!meme")) {
+            flag = true;
             try {
                 reddit.ph(event);
             }catch(Exception e){
-                System.out.println("Nope"+e);
+                System.out.println("Nope, " + e.getMessage());
             }
 
         }
@@ -125,9 +124,11 @@ public class Main extends ListenerAdapter {
 
         String query_set[] = rmsg.split(" ", 2);
         if (query_set[0].equals("!movie") && query_set.length == 1){
+            flag = true;
             event.getChannel().sendMessage("Please, type command as follows: ```!movie <query>```").queue();
         }
         else if(query_set[0].equals("!movie") && query_set.length == 2){
+            flag = true;
             try {
                 MovieResultsPage ans = tmdbSearch.searchMovie(query_set[1], 0, "en-US", false, 1);
                 res = ans.getResults();
@@ -142,6 +143,9 @@ public class Main extends ListenerAdapter {
             catch(Exception e){
                 System.out.println("Error: " + e.getMessage());
             }
+        }
+        else if (!event.getAuthor().isBot() && !flag){
+            event.getChannel().sendMessage("Sorry, what did you mean?\nFor more info, type: ```!menu```").queue();
         }
     }
 }
