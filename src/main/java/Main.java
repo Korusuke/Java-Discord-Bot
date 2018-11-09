@@ -1,4 +1,8 @@
 import functions.news;
+import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.TmdbSearch;
+import info.movito.themoviedbapi.model.MovieDb;
+import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import io.github.ccincharge.newsapi.NewsApi;
 import io.github.ccincharge.newsapi.datamodels.Article;
 import io.github.ccincharge.newsapi.requests.RequestBuilder;
@@ -10,14 +14,13 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.EmbedBuilder;
 import javax.security.auth.login.LoginException;
-import java.awt.Color;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import functions.reddit;
 import functions.menu;
+import functions.movies;
 
 public class Main extends ListenerAdapter {
 
@@ -26,6 +29,7 @@ public class Main extends ListenerAdapter {
     ArrayList<Article> newsArticle;
     EmbedBuilder eb;
     RequestBuilder query_request;
+    List<MovieDb> res;
 
     public static void main(String[] args) throws LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -47,7 +51,7 @@ public class Main extends ListenerAdapter {
         }
         else if(param[0].equals("!news") && param[1].toLowerCase().equals("latest")){
             System.out.println("Parameter passed: " + param[1].toLowerCase());
-            RequestBuilder query_request = new RequestBuilder().setCountry("in").setLanguage("en");
+            RequestBuilder query_request = new RequestBuilder().setCountry("in").setLanguage("en").setSortBy("popularity");
 
             try {
                 apiArt = newsApi.sendTopRequest(query_request);
@@ -64,7 +68,7 @@ public class Main extends ListenerAdapter {
 
             System.out.println("Category passed: " + param[1].toLowerCase() + "\nKeyword passed: " + param[2].toLowerCase());
             try{
-                query_request = new RequestBuilder().setCategory(param[1].toLowerCase()).setQ(param[2].toLowerCase()).setLanguage("en");
+                query_request = new RequestBuilder().setCategory(param[1].toLowerCase()).setQ(param[2].toLowerCase()).setLanguage("en").setSortBy("relevancy");
             } catch (Exception e) {
                 System.out.println("Error :" + e.getMessage());
                 event.getChannel().sendMessage("Please, make the following changes.\n" + e.getMessage()).queue();
@@ -99,6 +103,29 @@ public class Main extends ListenerAdapter {
 
         if (rmsg.equals("!meme")) {
             reddit.ph(event);
+        }
+
+        TmdbSearch tmdbSearch = new TmdbApi("50bf7dc3c21dd3c8f31cf6ba460b5bcb").getSearch();  // TmDB API key
+
+        String query_set[] = rmsg.split(" ", 2);
+        if (query_set[0].equals("!movies") && query_set.length == 1){
+            event.getChannel().sendMessage("Please, type command as follows: ```!movies <query>```").queue();
+        }
+        else if(query_set[0].equals("!movies") && query_set.length == 2){
+            try {
+                MovieResultsPage ans = tmdbSearch.searchMovie(query_set[1], 0, "en-US", false, 1);
+                res = ans.getResults();
+                System.out.println("API Response: " + res);
+                if(res.size() == 0){
+                    event.getChannel().sendMessage("Sorry, currently no movie available for given query.").queue();
+                }
+                else {
+                    movies.show_movies(event, res);
+                }
+            }
+            catch(Exception e){
+                System.out.println("Error: " + e.getMessage());
+            }
         }
     }
 }
