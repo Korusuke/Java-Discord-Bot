@@ -14,6 +14,7 @@ public class menu {
         eb.setTitle("Behold the Korusuke Bot!", "https://github.com/2knal/Probably-OOPM/");
         eb.addField("!meme", "r/programmershumor meme at your finger tips", false);
         eb.addField("!music", "Its not music!", false);
+        eb.addField("!movies", "Do not search.\nFormat: ```!movie <query>```", false);
         eb.addField("!news", "Fake News alert.\nCategories: ```general, politics, gaming, music, business, entertainment, health-and-medical, science-and-nature, technology, sport.``` \nFormat: ```!news <category> <keyword or query>``` or ```!news latest``` to get latest updates.", false);
         eb.addField("!ping", "Try it out...", false);
         event.getChannel().sendMessage(eb.build()).queue();

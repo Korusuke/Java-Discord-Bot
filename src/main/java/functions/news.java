@@ -16,14 +16,15 @@ public class news {
                 event.getChannel().sendMessage("Sorry, currently no news-feed available for given query.").queue();
             }
             else{
-                for (Article x : newsArticle) {
+                for (int i=0; i<10; i++) {
+                    Article x = newsArticle.get(i);
                     eb = new EmbedBuilder();
                     try {
                         eb.setTitle(x.title(), x.url());
                         eb.setColor(Color.white);
                         eb.setDescription(x.description());
                         eb.setAuthor(x.author(), null, x.urlToImage());
-
+                        eb.addBlankField(false);
                         // @korusuke plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
                         eb.setFooter("Published at " + x.publishedAt() + ", by " + x.source().name(), null);
                         eb.setThumbnail(x.urlToImage());
@@ -48,6 +49,7 @@ public class news {
                         eb.setColor(Color.white);
                         eb.setDescription(x.description());
                         eb.setAuthor(x.author(), null, x.urlToImage());
+                        eb.addBlankField(false);
 
                         // @korusuke plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
                         eb.setFooter("Published at " + x.publishedAt() + ", by " + x.source().name(), null);
