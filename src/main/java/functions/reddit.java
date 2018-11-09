@@ -71,8 +71,6 @@ public class reddit {
             eb.setImage(postPic);
             event.getChannel().sendMessage(eb.build()).queue();
         }
-
     }
-
 }
 

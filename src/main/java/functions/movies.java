@@ -17,7 +17,6 @@ public class movies {
             eb.setImage("https://image.tmdb.org/t/p/w185" + x.getPosterPath());
             eb.setTitle(x.getTitle());
             eb.setColor(Color.white);
-
             System.out.println("IMDb rating: " + x.getVoteAverage());
             try{
                 eb.addField("IMDb rating: ", Float.toString(x.getVoteAverage()), false);

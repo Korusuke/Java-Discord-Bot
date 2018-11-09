@@ -120,6 +120,8 @@ public class Main extends ListenerAdapter {
 
         }
 
+        // Beginning of movie stuff
+
         TmdbSearch tmdbSearch = new TmdbApi("50bf7dc3c21dd3c8f31cf6ba460b5bcb").getSearch();  // TmDB API key
 
         String query_set[] = rmsg.split(" ", 2);
