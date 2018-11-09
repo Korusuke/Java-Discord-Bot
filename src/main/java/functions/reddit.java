@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class reddit {
     public static void ph(MessageReceivedEvent event) {
-
         event.getChannel().sendMessage("Meme Incoming!").queue();
     }
 }
