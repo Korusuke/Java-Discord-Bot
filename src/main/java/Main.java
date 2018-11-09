@@ -108,10 +108,10 @@ public class Main extends ListenerAdapter {
         TmdbSearch tmdbSearch = new TmdbApi("50bf7dc3c21dd3c8f31cf6ba460b5bcb").getSearch();  // TmDB API key
 
         String query_set[] = rmsg.split(" ", 2);
-        if (query_set[0].equals("!movies") && query_set.length == 1){
-            event.getChannel().sendMessage("Please, type command as follows: ```!movies <query>```").queue();
+        if (query_set[0].equals("!movie") && query_set.length == 1){
+            event.getChannel().sendMessage("Please, type command as follows: ```!movie <query>```").queue();
         }
-        else if(query_set[0].equals("!movies") && query_set.length == 2){
+        else if(query_set[0].equals("!movie") && query_set.length == 2){
             try {
                 MovieResultsPage ans = tmdbSearch.searchMovie(query_set[1], 0, "en-US", false, 1);
                 res = ans.getResults();
