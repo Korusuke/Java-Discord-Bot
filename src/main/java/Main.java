@@ -1,3 +1,5 @@
+import com.google.firebase.cloud.FirestoreClient;
+import database.log;
 import functions.menu;
 import functions.movies;
 import functions.news;
@@ -16,8 +18,15 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 
 
 
@@ -30,6 +39,9 @@ public class Main extends ListenerAdapter {
     RequestBuilder query_request;
     List<MovieDb> res;
     Boolean flag = false;
+    static
+    Firestore db;
+
 
     public static void main(String[] args) throws Exception {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -37,12 +49,38 @@ public class Main extends ListenerAdapter {
         builder.setToken(token);
         builder.addEventListener(new Main());
         builder.buildAsync();
+
+        try{
+            InputStream serviceAccount = new FileInputStream("/home/karan/Downloads/oopm-ea9b5-firebase-adminsdk-xtizv-0d013dadab.json");
+            GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(credentials)
+                    .build();
+            FirebaseApp.initializeApp(options);
+
+        }catch(Exception e){
+            System.out.println("Error connecting to Firebase:" + e);
+        }
+
+        db = FirestoreClient.getFirestore();
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
+        //Important things first :p Log Everything
         flag = false;
         System.out.println("We received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
+
+        log.logMsg(db,event);
+
+        if(!event.getAuthor().isBot()){
+            log.updatepts(db,event);
+        }
+
+
+        //End of data collection
+
 
         newsApi = new NewsApi("12ecefd220214b38902f8a9d7dc0beff"); // Hide it later, newsApi api key
 
