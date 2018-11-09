@@ -22,6 +22,13 @@ import functions.reddit;
 import functions.menu;
 import functions.movies;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+
+
 public class Main extends ListenerAdapter {
 
     NewsApi newsApi;
@@ -31,9 +38,8 @@ public class Main extends ListenerAdapter {
     RequestBuilder query_request;
     List<MovieDb> res;
 
-    public static void main(String[] args) throws LoginException {
+    public static void main(String[] args) throws Exception {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
-
         String token = "NTAyMTY1Mzc0MDMzMzMwMTc2.Dqj91Q.gOJ79EubCj8UI2StJFzvJEH1m8w"; // Hide it later, Discord Bot token
         builder.setToken(token);
         builder.addEventListener(new Main());
@@ -43,9 +49,13 @@ public class Main extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
 
+        System.out.println("We received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
+
         newsApi = new NewsApi("12ecefd220214b38902f8a9d7dc0beff"); // Hide it later, newsApi api key
 
         String param[] = event.getMessage().getContentRaw().split(" ", 3);
+
+        //News Stuff - Checking for valid query
         if(param[0].toLowerCase().equals("!news") && param.length == 1){
             event.getChannel().sendMessage("Please, type command as follows: ```!news <category> <keyword>``` or ```!news latest```\nFor more info, type ```!menu```").queue();
         }
@@ -87,7 +97,8 @@ public class Main extends ListenerAdapter {
             event.getChannel().sendMessage("Please, type command as follows: ```!news <category> <keyword>``` or ```!news latest```\nFor more info, type ```!menu```").queue();
         }
 
-        System.out.println("We received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
+        //End of News-Stuff
+
 
         String rmsg = event.getMessage().getContentRaw();
         rmsg = rmsg.toLowerCase();
@@ -102,7 +113,12 @@ public class Main extends ListenerAdapter {
         }
 
         if (rmsg.equals("!meme")) {
-            reddit.ph(event);
+            try {
+                reddit.ph(event);
+            }catch(Exception e){
+                System.out.println("Nope"+e);
+            }
+
         }
 
         TmdbSearch tmdbSearch = new TmdbApi("50bf7dc3c21dd3c8f31cf6ba460b5bcb").getSearch();  // TmDB API key
