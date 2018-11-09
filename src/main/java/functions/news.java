@@ -25,6 +25,7 @@ public class news {
                         eb.setDescription(x.description());
                         eb.setAuthor(x.author(), null, x.urlToImage());
                         eb.addBlankField(false);
+
                         // @korusuke plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
                         eb.setFooter("Published at " + x.publishedAt() + ", by " + x.source().name(), null);
                         eb.setThumbnail(x.urlToImage());
@@ -62,6 +63,5 @@ public class news {
                 System.out.println("Done with given query.");
             }
         }
-
     }
 }
