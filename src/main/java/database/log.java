@@ -88,7 +88,7 @@ public class log {
         catch(Exception e){
             System.out.println("Error: " + e.getMessage());
         }
-        int rank;
+
         Collections.sort(guys);
         for(int i=0; i<guys.size(); i++){
             if(event.getAuthor().getName().equals(guys.get(i).getName())){

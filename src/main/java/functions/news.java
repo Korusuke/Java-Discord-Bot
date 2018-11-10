@@ -1,87 +1,91 @@
 package functions;
 
+import io.github.ccincharge.newsapi.NewsApi;
 import io.github.ccincharge.newsapi.datamodels.Article;
+import io.github.ccincharge.newsapi.requests.RequestBuilder;
+import io.github.ccincharge.newsapi.responses.ApiArticlesResponse;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class news {
 
-    public static void show_news(MessageReceivedEvent event, ArrayList <Article> newsArticle, Boolean flag){
-        EmbedBuilder eb = new EmbedBuilder();
-        if (!flag){
-            if(newsArticle.size() == 0){
-                event.getChannel().sendMessage("Sorry, currently no news-feed available for given query.").queue();
-            }
-            else{
-                for (int i=0; i<10; i++) {
-                    Article x = newsArticle.get(i);
-                    eb = new EmbedBuilder();
-                    try {
-                        eb.setTitle(x.title(), x.url());
-                        eb.setColor(Color.white);
-                        eb.setDescription(x.description());
-                        eb.setAuthor(x.author(), null, x.urlToImage());
-                        eb.addBlankField(false);
+    private static NewsApi newsApi = new NewsApi("d0c33432dc1a4d798b5ec9764f04ef29"); // TODO: Hide it later (newsApi)
+    private static RequestBuilder query_request;
+    private static ApiArticlesResponse apiArt;
 
-                        // @kiteretsu plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
+    private static void embed_sender(MessageReceivedEvent event, ArrayList<Article> newsArticle, int count){
+        EmbedBuilder eb;
 
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        DateFormat outputformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        Date date = null;
-                        String output = null;
-                        date= df.parse(x.publishedAt());
-                        output = outputformat.format(date);
-
-
-                        eb.setFooter("Published at " + output + ", by " + x.source().name(), null);
-                        eb.setThumbnail(x.urlToImage());
-                        event.getChannel().sendMessage(eb.build()).queue();
-                    } catch (Exception e) {
-                        System.out.println("Error :" + e.getMessage());
-                    }
-                }
-                System.out.println("Done with given query.");
-            }
+        if(newsArticle.size() == 0){
+            event.getChannel().sendMessage("Sorry, currently no news-feed available for given query.").queue();
         }
         else{
-            if(newsArticle.size() == 0){
-                event.getChannel().sendMessage("Sorry, currently no news-feed available for given query.").queue();
-            }
-            else{
-                for (int i=0; i<5; i++) {
-                    eb = new EmbedBuilder();
-                    Article x = newsArticle.get(i);
-                    try {
-                        eb.setTitle(x.title(), x.url());
-                        eb.setColor(Color.white);
-                        eb.setDescription(x.description());
-                        eb.setAuthor(x.author(), null, x.urlToImage());
-                        eb.addBlankField(false);
+            for (int i=0; i<count; i++) {
+                Article x = newsArticle.get(i);
+                eb = new EmbedBuilder();
 
-                        // @kiteretsu plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        DateFormat outputformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                        Date date = null;
-                        String output = null;
-                        date= df.parse(x.publishedAt());
-                        output = outputformat.format(date);
+                eb.setTitle(x.title(), x.url());
+                eb.setColor(Color.white);
+                eb.setDescription(x.description());
+                eb.setAuthor(x.author(), null, x.urlToImage());
+                eb.addBlankField(false);
 
-                        eb.setFooter("Published at " + output + ", by " + x.source().name(), null);
-                        eb.setThumbnail(x.urlToImage());
-                        event.getChannel().sendMessage(eb.build()).queue();
-                    } catch (Exception e) {
-                        System.out.println("Error :" + e.getMessage());
-                    }
+                Date date = null;
+                String output = null;
+                try {
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                    DateFormat outputformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    date = df.parse(x.publishedAt());
+                    output = outputformat.format(date);
+                }catch(Exception e){
+                    output = "In Mysterious Times";
                 }
-                System.out.println("Done with given query.");
+                eb.setFooter("Published at " + output + ", by " + x.source().name(), null);
+                eb.setThumbnail(x.urlToImage());
+                event.getChannel().sendMessage(eb.build()).queue();
             }
+            System.out.println("Done with given query.");
+        }
+    }
+
+    public static void show_latest_news(MessageReceivedEvent event){
+        query_request = new RequestBuilder().setCountry("in").setLanguage("en").setSortBy("popularity"); // searching for latest indian news
+
+        try {
+            apiArt = newsApi.sendTopRequest(query_request);
+            System.out.println("API Response: " + apiArt.articles()); // Logging into console
+            ArrayList <Article> newsArticle = apiArt.articles();
+            embed_sender(event, newsArticle, 5);
+        }
+        catch(Exception e) {
+            System.out.println("Error :" + e.getMessage());
+        }
+    }
+
+    public static void show_news(MessageReceivedEvent event){
+        String parameters[] = event.getMessage().getContentRaw().split(" ", 3);
+
+        try{
+            query_request = new RequestBuilder().setCategory(parameters[1].toLowerCase()).setQ(parameters[2].toLowerCase()).setLanguage("en").setSortBy("relevancy"); // Search by category and keyword
+        }
+        catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            event.getChannel().sendMessage("Please, make the following changes.\n" + e.getMessage()).queue();
+        }
+        try{
+            apiArt = newsApi.sendEverythingRequest(query_request);
+            System.out.println("API Response(News): " + apiArt.articles()); // Logging into console
+            ArrayList <Article> newsArticle = apiArt.articles();
+            embed_sender(event, newsArticle, 10);
+        }
+        catch (Exception e) {
+            System.out.println("Error :" + e.getMessage());
         }
     }
 }
