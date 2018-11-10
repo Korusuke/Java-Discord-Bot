@@ -13,6 +13,8 @@ sourceCompatibility = 1.8
 
 
 
+
+
 repositories {
 
     jcenter()
@@ -45,10 +47,10 @@ jar {
     }
 
     from {
-        configurations.compile.collect { it.isDirectory() ? it : (it) }
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
 task stage {
-    dependsOn jar
+    dependsOn shadowJar
 }
