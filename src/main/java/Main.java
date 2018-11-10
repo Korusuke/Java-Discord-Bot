@@ -61,7 +61,7 @@ public class Main extends ListenerAdapter {
         builder.buildAsync();
 
         try{
-            InputStream serviceAccount = new FileInputStream("/home/karan/Downloads/oopm-ea9b5-firebase-adminsdk-xtizv-0d013dadab.json");// TODO: Firebase Token Path
+            InputStream serviceAccount = new FileInputStream("oopm-ea9b5-firebase-adminsdk-xtizv-0d013dadab.json");// TODO: Firebase Token Path
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 
             FirebaseOptions options = new FirebaseOptions.Builder()
