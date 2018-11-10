@@ -46,9 +46,6 @@ jar {
 
     }
 
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : (it) }
-    }
 }
 
 task stage {
