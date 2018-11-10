@@ -1,5 +1,9 @@
 plugins {
     id 'java'
+    id 'idea'
+    id 'application'
+    // Allows running "gradle shadowJar" to create an executable JAR of your project
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
 
 group 'com.oopm'
