@@ -16,10 +16,13 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 import database.log;
+import webpage.index;
 
 public class Main extends ListenerAdapter {
 
     private static Firestore db;
+
+
 
     public static void main(String[] args) throws Exception {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -27,7 +30,7 @@ public class Main extends ListenerAdapter {
         builder.setToken(token);
         builder.addEventListener(new Main());
         builder.buildAsync();
-
+        new index();
         try{ // Firebase connectivity
             InputStream serviceAccount = new FileInputStream("oopm-ea9b5-firebase-adminsdk-xtizv-0d013dadab.json");
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
