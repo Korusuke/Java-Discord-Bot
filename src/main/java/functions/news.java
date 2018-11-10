@@ -5,7 +5,11 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class news {
 
@@ -26,8 +30,17 @@ public class news {
                         eb.setAuthor(x.author(), null, x.urlToImage());
                         eb.addBlankField(false);
 
-                        // @korusuke plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
-                        eb.setFooter("Published at " + x.publishedAt() + ", by " + x.source().name(), null);
+                        // @kiteretsu plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
+
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        DateFormat outputformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        Date date = null;
+                        String output = null;
+                        date= df.parse(x.publishedAt());
+                        output = outputformat.format(date);
+
+
+                        eb.setFooter("Published at " + output + ", by " + x.source().name(), null);
                         eb.setThumbnail(x.urlToImage());
                         event.getChannel().sendMessage(eb.build()).queue();
                     } catch (Exception e) {
@@ -52,8 +65,15 @@ public class news {
                         eb.setAuthor(x.author(), null, x.urlToImage());
                         eb.addBlankField(false);
 
-                        // @korusuke plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
-                        eb.setFooter("Published at " + x.publishedAt() + ", by " + x.source().name(), null);
+                        // @kiteretsu plz figure out a way to parse given date format, i was unable to do so (ISO 8601 Date format, btw)
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        DateFormat outputformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        Date date = null;
+                        String output = null;
+                        date= df.parse(x.publishedAt());
+                        output = outputformat.format(date);
+
+                        eb.setFooter("Published at " + output + ", by " + x.source().name(), null);
                         eb.setThumbnail(x.urlToImage());
                         event.getChannel().sendMessage(eb.build()).queue();
                     } catch (Exception e) {
