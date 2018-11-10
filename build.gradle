@@ -32,3 +32,20 @@ dependencies {
     compile 'com.google.firebase:firebase-admin:6.5.0'
 }
 
+mainClassName = "Main"
+
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClassName",
+                "Implementation-Version": version
+
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task stage {
+    dependsOn jar
+}
