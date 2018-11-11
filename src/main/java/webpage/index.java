@@ -14,54 +14,83 @@ public class index {
     public index() {
         this.http = new HttpServer(
                 Integer.parseInt(System.getenv().getOrDefault("PORT", "8080")));
-        this.http.registerHandler("/", new BanUtilStatus());
+        this.http.registerHandler("/", new Status());
         this.http.start();
     }
 
-    private class BanUtilStatus implements HttpHandler.Request {
-
-        private static final String PRE_CSS = "color: #FF6961;" +
-                "border-style: solid;" +
-                "text-shadow: 1px 2px 10px #2D2F3C;" +
-                "border: #2D2F3C;" +
-                "font-weight: bolder;" +
-                "background-color: 2D2F3C;" +
-                "padding-bottom: 10px;" +
-                "display: inline-block;" +
-                "padding-right:  5px;" +
-                "margin: 0px;";
-
-        private static final String PRE_TAG = "<pre style=\"" + PRE_CSS + "\">";
-
-        private static final String INVITE_FORMAT = "https://discordapp.com/oauth2/authorize?client_id=%s&scope=bot&permissions=%d";
-
-
-        private String createInviteLinkHTML() {
-            String link = "google.com";
-            return "<h3 style=\"display:inline\"><a href=\""
-                    + link + "\">Invite to server</a></h3> (remember BanUtil is a single server bot)";
-        }
-
-        private String getExceptionTraceHTML() {
-
-            return "<br><br><b>This may (or may not) be related:</b><br>" + PRE_TAG + "error" + "</pre>";
-        }
+    private class Status implements HttpHandler.Request {
 
         @Override
         public HttpResponse onRequest(HttpRequest httpRequest, InetAddress inetAddress) {
-            StringBuilder statusPage = new StringBuilder("<body style=\"background-color: #95D3BD;\">");
+            StringBuilder statusPage = new StringBuilder("<body style = \"        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;background-color: #080808;color:white; font-size: 110%;\" align='center'><div style='max-width:1000px; margin:auto;'");
 
-                statusPage.append(PRE_TAG).append("Welcome").append("</pre>");
-                statusPage.append("<p>Oh I think you'll find this ban hammer is fully operational.</p>");
-                statusPage.append("<h1 style=\"color:#FF6961\">Bans since last restart: <span style=\"font-size:10px\">10000000000000000000000000000000</span>")
-                        .append("</h1>");
-                statusPage.append(this.createInviteLinkHTML());
+            final String body = "    " +
+                    "<img src=\"https://github.com/2knal/Probably-OOPM/raw/master/assets/Korusuke.png\" class=\"center\" style = \"display:block;\n" +
+                    " margin-left:auto;\n" +
+                    "        margin-right:auto;\n" +
+                    "    margin-top: 0.25%;    max-width: 17.50%;\n" +
+                    "    max-height: 10%\">" +
+
+                    "<h2 align = \"center\">Korusuke Bot</h2>\n" +
+                    "        <div align=\"center\">\n" +
+                    "        <p><a href=\"https://www.java.com/\" rel=\"nofollow\"><img src=\"https://camo.githubusercontent.com/6764e02a1c021a4e7bf16fce7ec8a90abb52b4ae/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d616465253230776974682d4a6176612d50696e6b2e737667\" alt=\"made-with-java\" data-canonical-src=\"https://img.shields.io/badge/Made%20with-Java-Pink.svg\" style=\"max-width:100%;\"></a>\n" +
+                    "        <br></p>\n" +
+                    "        </div>\n" +
+                    "<hr>" +
+                    "<p><b>We have made a dead simple discord bot, using <a href=\"https://github.com/DV8FromTheWorld/JDA\">JDA</a>, certain APIs and Firebase for data logging.</b></p>\n" +
+                    "<p><h4>Click here to try our Korusuke Bot : " +
+                    "<form  target=\"_blank\" action=\"https://discord.gg/ds6SaC\"><input style = \"        background-color: rgb(14, 109, 251) ;" +
+                    "                          color: white;" +
+                    "                                  padding:5px;" +
+                    "                            position:relative;\" class=\"but\" type=\"submit\" value=\"Invite Link\"/></form></h4></p>" +
+                    "<h4>\n" +
+                    "        <b>Features</b>\n" +
+                    "<ul>\n" +
+                    "    <li>Provides latest News along with user specific search queries\n" +
+                    "\n" +
+                    "    <li>Searches for queried movie and provides it's details\n" +
+                    "    \n" +
+                    "    <li>Provides r/ProgrammerHumor memes, to lighten up ones mood\n" +
+                    "</ul>\n" +
+                    "</h4>" +
+                    "<h4>\n" +
+                    "        <b>Add-Ons</b>\n" +
+                    "<ul>\n" +
+                    "    <li>Allow users to fetch movie reviews\n" +
+                    "\n" +
+                    "    <li>Search for TV shows\n" +
+                    "\n" +
+                    "    <li>Add a music bot\n" +
+                    "\n" +
+                    "    <li>Add a chatbot feature, in case the user feels lonely :P\n" +
+                    "</ul>\n" +
+                    "</h4>" +
+                    "<h4>\n" +
+                    "        <b>The list of APIs we used:</b>\n" +
+                    "<ul>\n" +
+                    "    <li><a href=\"https://newsapi.org/\" target=\"_blank\">NewsApi</a>\n" +
+                    "\n" +
+                    "    <li><a href=\"https://www.themoviedb.org/\"target=\"_blank\">TMDb</a>\n" +
+                    "\n" +
+                    "    <li><a href=\"https://www.reddit.com/\" target=\"_blank\">Reddit</a>\n" +
+                    "</ul>\n" +
+                    "</h4>" +
+                    "<h4>\n" +
+                    "        <b>Contributors</b>\n" +
+                    "<ul>\n" +
+                    "    <li><a href=\"https://github.com/2knal\" target=\"_blank\">@2knal</a>\n" +
+                    "\n" +
+                    "    <li><a href=\"https://github.com/korusuke\"target=\"_blank\">@korusuke</a>\n" +
+                    "\n" +
+                    "    <li><a href=\"https://github.com/Aditya2223\" target=\"_blank\">@Aditya2223</a>\n" +
+                    "</ul\n" +
+                    "</h4>";
 
 
-            statusPage.append(this.getExceptionTraceHTML());
-            statusPage.append("<p>Refresh page for updates.</p>");
-            statusPage.append("<p>Get your own BanUtil: <a href=\"" +"Repo Link" + "\">" + "Repo Link" + "</a></p>");
-            statusPage.append("</body>");
+            statusPage.append(body);
+            statusPage.append("<a href=\"https://github.com/2knal/Probably-OOPM\" target=\"_blank\">Github Repo</a>" +
+                    "<hr>\n" +
+                    "</div></body>");
             return new HttpResponse(statusPage.toString(), HttpStatusCode.OK, HttpMimeType.TXT) {
                 @Override
                 public String format() {
