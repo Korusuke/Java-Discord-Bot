@@ -22,7 +22,7 @@ public class index {
 
         @Override
         public HttpResponse onRequest(HttpRequest httpRequest, InetAddress inetAddress) {
-            StringBuilder statusPage = new StringBuilder("<body style = \"        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;background-color: #080808;color:white; font-size: 110%;\" align='center'><div style='max-width:1000px; margin:auto;'");
+            StringBuilder statusPage = new StringBuilder("<body style = \"        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;background-color: #080808;color:white; font-size: 110%;\" align='center'><div style='max-width:1000px; margin:auto;'>");
 
             final String body = "    " +
                     "<img src=\"https://github.com/2knal/Probably-OOPM/raw/master/assets/Korusuke.png\" class=\"center\" style = \"display:block;\n" +
