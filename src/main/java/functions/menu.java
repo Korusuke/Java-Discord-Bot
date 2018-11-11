@@ -11,7 +11,7 @@ public class menu {
         EmbedBuilder eb = new EmbedBuilder();
 
         eb.setColor(Color.blue);
-        eb.setTitle("Korusuke-Bot", "https://github.com/korusuke/Discord-Bot/");
+        eb.setTitle("Korusuke-Bot", "https://github.com/Korusuke/Java-Discord-Bot");
         eb.addField("!meme", "r/ProgrammersHumor meme at your finger tips", false);
         eb.addField("!rank", "Don't even dare...", false);
         eb.addField("!movie", "Do not search.\nFormat: ```!movie <query>```", false);
