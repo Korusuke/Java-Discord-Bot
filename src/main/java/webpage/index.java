@@ -88,7 +88,7 @@ public class index {
 
 
             statusPage.append(body);
-            statusPage.append("<a href=\"https://github.com/2knal/Probably-OOPM\" target=\"_blank\">Github Repo</a>" +
+            statusPage.append("<a href=\"https://github.com/Korusuke/Java-Discord-Bot\" target=\"_blank\">Github Repo</a>" +
                     "<hr>\n" +
                     "</div></body>");
             return new HttpResponse(statusPage.toString(), HttpStatusCode.OK, HttpMimeType.TXT) {

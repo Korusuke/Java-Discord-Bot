@@ -26,13 +26,13 @@ public class Main extends ListenerAdapter {
 
     public static void main(String[] args) throws Exception {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
-        String token = "NTA4MDAxMzM3MzcyNDQyNjQ0.DseBjQ.bKNcS4BX53JF66iu3Mw995sUaZg"; // TODO: Hide it later (Discord Bot Token)
+        String token = ""; // TODO: (Discord Bot Token)
         builder.setToken(token);
         builder.addEventListener(new Main());
         builder.buildAsync();
         new index();
         try{ // Firebase connectivity
-            InputStream serviceAccount = new FileInputStream("oopm-ea9b5-firebase-adminsdk-xtizv-0d013dadab.json");
+            InputStream serviceAccount = new FileInputStream(""); //TODO: (Firebase Auth Filepath)
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 
             FirebaseOptions options = new FirebaseOptions.Builder()

@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.List;
 
 public class movies {
-    private static TmdbApi tmdbApi = new TmdbApi("925b0bf55e6719518fb07ebed6932308"); // TODO: Hide it later (TMDb api key)
+    private static TmdbApi tmdbApi = new TmdbApi(""); // TODO:(TMDb api key)
 
     public static void show_movies(MessageReceivedEvent event){
 

@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class news {
 
-    private static NewsApi newsApi = new NewsApi("d0c33432dc1a4d798b5ec9764f04ef29"); // TODO: Hide it later (newsApi)
+    private static NewsApi newsApi = new NewsApi(""); // TODO: (newsApi)
     private static RequestBuilder query_request;
     private static ApiArticlesResponse apiArt;
 
